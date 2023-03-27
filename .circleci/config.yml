@@ -30,7 +30,7 @@ jobs:
           command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
       - run:
           name: Build Docker Image
-          command: docker build -t ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1}
+          command: docker build -t ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1} .
       - run:
           name: Push Docker Image
           command: docker push ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1}
