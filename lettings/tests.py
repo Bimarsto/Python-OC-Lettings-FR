@@ -15,4 +15,3 @@ class TestLettings(TestCase):
             response = self.client.get(reverse('lettings:letting', args=[letting.id]))
             assert response.status_code == 200
             self.assertInHTML(letting.title, str(response.content))
-
