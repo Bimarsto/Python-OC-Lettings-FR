@@ -1,9 +1,14 @@
 version: 2.1
 
-jobs:
-  build_and_test:
+executors:
+  python:
     docker:
       - image: cimg/python:3.10.10
+    resource_class: small
+
+jobs:
+  build_and_test:
+    executor: python
     steps:
       - checkout
       - run:
@@ -15,9 +20,24 @@ jobs:
           name: test
           command: pytest
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  build_and_push_docker_image:
+    executor: python
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Login Docker
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+      - run:
+          name: Build Docker Image
+          command: docker build -t ${DOCKER_USER}/Python-OC-Lettings-FR:${CIRCLE_SHA1}
+      - run:
+          name: Push Docker Image
+          command: docker push ${DOCKER_USER}/Python-OC-Lettings-FR:${CIRCLE_SHA1}
+
+
 workflows:
-  say-hello-workflow:
+  master:
     jobs:
       - build_and_test
+      - build_and_push_docker_image
