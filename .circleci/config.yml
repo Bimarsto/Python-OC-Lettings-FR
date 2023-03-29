@@ -4,11 +4,11 @@ executors:
   python:
     docker:
       - image: cimg/python:3.10.10
-    resource_class: small
 
 jobs:
   build_and_test:
     executor: python
+    resource_class: small
     steps:
       - checkout
       - run:
@@ -22,6 +22,7 @@ jobs:
 
   build_and_push_docker_image:
     executor: python
+    resource_class: large
     steps:
       - checkout
       - setup_remote_docker
