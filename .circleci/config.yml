@@ -29,6 +29,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - heroku/install
       - run:
           name: Login Docker
           command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
@@ -45,8 +46,14 @@ jobs:
       - run:
           name: Login Heroku
           command: heroku container:login
-      - heroku/push-docker-image:
-          process-type: web
+      - run:
+          name: Pushing to heroku
+          command: |
+            docker pull ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1}
+            HEROKU_API_KEY=${HEROKU_API_KEY} docker tag ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1} registry.heroku.com/${HEROKU_APP_NAME}/web
+            HEROKU_API_KEY=${HEROKU_API_KEY} docker push registry.heroku.com/${HEROKU_APP_NAME}/web
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release web -a ${HEROKU_APP_NAME}
+
 
 workflows:
   master:
