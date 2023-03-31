@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  heroku: circleci/heroku@2.0.0
+
 executors:
   python:
     docker:
@@ -20,7 +23,7 @@ jobs:
           name: test
           command: pytest
 
-  build_and_push_docker_image:
+  build_and_push_image:
     executor: python
     resource_class: large
     steps:
@@ -35,12 +38,33 @@ jobs:
       - run:
           name: Push Docker Image
           command: docker push ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1}
+                   docker push ${COMPANY}/python-oc-lettings-fr:lastest
+
+  deploy:
+    executor: heroku/default
+    steps:
+      - checkout
+      - setup_remote_docker
+      - heroku/install
+      - run:
+          name: Login Heroku
+          command: heroku container:login
+      - run:
+          name: Login Docker
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+      - run:
+          name: Push Image On Heroku
+          command: heroku/push-docker-image
+
 
 
 workflows:
   master:
     jobs:
       - build_and_test
-      - build_and_push_docker_image:
+      - build_and_push_image:
           requires:
             - build_and_test
+      - deploy:
+          requires:
+            - build_and_push_image
