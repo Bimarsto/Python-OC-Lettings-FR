@@ -35,6 +35,7 @@ jobs:
       - run:
           name: Build Docker Image
           command: docker build -t ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1} .
+                   docker build -t ${COMPANY}/python-oc-lettings-fr:lastest .
       - run:
           name: Push Docker Image
           command: docker push ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1}
