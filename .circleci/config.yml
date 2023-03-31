@@ -49,8 +49,8 @@ jobs:
       - run:
           name: Pushing to heroku
           command: |
-            docker pull ${COMPANY}/oc-lettings-fr:${CIRCLE_SHA1}
-            HEROKU_API_KEY=${HEROKU_API_KEY} docker tag ${COMPANY}/oc-lettings:${CIRCLE_SHA1} registry.heroku.com/${HEROKU_APP_NAME}/web
+            docker pull ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1}
+            HEROKU_API_KEY=${HEROKU_API_KEY} docker tag ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1} registry.heroku.com/${HEROKU_APP_NAME}/web
             HEROKU_API_KEY=${HEROKU_API_KEY} docker push registry.heroku.com/${HEROKU_APP_NAME}/web
             HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release web -a ${HEROKU_APP_NAME}
 
