@@ -23,7 +23,7 @@ jobs:
           name: test
           command: pytest
 
-  build_and_push_image:
+  build_and_deploy:
     executor: python
     resource_class: large
     steps:
@@ -45,15 +45,18 @@ jobs:
                    docker push ${COMPANY}/python-oc-lettings-fr:lastest
       - run:
           name: Login Heroku
-          command: heroku container:login      
+          command: heroku container:login
+      - run:
+          name: Pushing to heroku
+          command: |
+            heroku container:push web -a ${HEROKU_APP_NAME}
+            heroku container:release web -a ${HEROKU_APP_NAME}
+
 
 workflows:
   master:
     jobs:
       - build_and_test
-      - build_and_push_image:
+      - build_and_deploy:
           requires:
             - build_and_test
-      - heroku/push-docker-image:
-          requires:
-            - build_and_push_image
