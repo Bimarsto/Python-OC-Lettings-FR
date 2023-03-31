@@ -45,7 +45,7 @@ jobs:
       
 
   deploy:
-    machine: true
+    executor: heroku/default
     steps:
       - checkout
       - setup_remote_docker
