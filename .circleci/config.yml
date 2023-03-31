@@ -24,7 +24,7 @@ jobs:
           command: pytest
 
   build_and_deploy:
-    executor: heroku/default
+    executor: python
     resource_class: large
     steps:
       - checkout
@@ -46,9 +46,8 @@ jobs:
       - run:
           name: Login Heroku
           command: heroku container:login
-      - run:
-          name: Push Image On Heroku
-          command: heroku/push-docker-image
+      - heroku/push-docker-image:
+          process-types: web
 
 workflows:
   master:
