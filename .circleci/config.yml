@@ -23,7 +23,7 @@ jobs:
           name: test
           command: pytest
 
-  build_and_push_image:
+  build_and_deploy:
     executor: python
     resource_class: large
     steps:
@@ -42,32 +42,16 @@ jobs:
           command: |
                    docker push ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1}
                    docker push ${COMPANY}/python-oc-lettings-fr:lastest
-
-  deploy:
-    executor: heroku/default
-    steps:
-      - checkout
-      - setup_remote_docker
-      - heroku/install
       - run:
           name: Login Heroku
           command: heroku container:login
-      - run:
-          name: Login Docker
-          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
-      - run:
-          name: Push Image On Heroku
-          command: heroku/push-docker-image
-
-
+      - heroku/push-docker-image:
+          process-type: web
 
 workflows:
   master:
     jobs:
       - build_and_test
-      - build_and_push_image:
+      - build_and_deploy:
           requires:
             - build_and_test
-      - deploy:
-          requires:
-            - build_and_push_image
