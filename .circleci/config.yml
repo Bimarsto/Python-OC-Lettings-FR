@@ -66,6 +66,14 @@ workflows:
       - build_and_push_container:
           requires:
             - build_and_test
+          filters:
+            branches:
+              only:
+                - master
       - deploy:
           requires:
             - build_and_push_container
+          filters:
+            branches:
+              only:
+                - master
