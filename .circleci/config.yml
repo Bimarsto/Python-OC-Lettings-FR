@@ -48,20 +48,21 @@ jobs:
     executor: heroku/default
     steps:
       - checkout
-      - setup_remote_docker
-      - heroku/install
-      - run:
-          name: Login Heroku
-          command: heroku container:login
-      - run:
-          name: Pull Docker Container
-          command: docker pull ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1}
-      - run:
-          name: Deploy On Heroku
-          command: |
-            HEROKU_API_KEY=${HEROKU_API_KEY} docker tag ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1} registry.heroku.com/${HEROKU_APP_NAME}/web
-            HEROKU_API_KEY=${HEROKU_API_KEY} docker push registry.heroku.com/${HEROKU_APP_NAME}/web
-            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release web -a ${HEROKU_APP_NAME}
+      - heroku/deploy-via-git
+#      - setup_remote_docker
+#      - heroku/install
+#      - run:
+#          name: Login Heroku
+#          command: heroku container:login
+#      - run:
+#          name: Pull Docker Container
+#          command: docker pull ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1}
+#      - run:
+#          name: Deploy On Heroku
+#          command: |
+#            HEROKU_API_KEY=${HEROKU_API_KEY} docker tag ${COMPANY}/python-oc-lettings-fr:${CIRCLE_SHA1} registry.heroku.com/${HEROKU_APP_NAME}/web
+#            HEROKU_API_KEY=${HEROKU_API_KEY} docker push registry.heroku.com/${HEROKU_APP_NAME}/web
+#            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release web -a ${HEROKU_APP_NAME}
 
 
 workflows:
