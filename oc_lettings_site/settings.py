@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'lettings',
     'profiles',
@@ -122,8 +121,6 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = "/static/"
-
-DJANGO_SETTINGS_MODULE = 'oc_lettings_site.settings'
 
 sentry_sdk.init(
     dsn=env('SENTRY_DSN'),
