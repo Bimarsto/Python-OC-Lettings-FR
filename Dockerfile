@@ -11,6 +11,4 @@ COPY . /app
 
 EXPOSE 8000
 
-ENTRYPOINT ["python", "manage.py"]
-
 CMD gunicorn --bind 0.0.0.0:$PORT oc_lettings_site.wsgi
