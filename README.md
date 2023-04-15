@@ -75,3 +75,34 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+
+____
+
+## Déploiement
+
+Le déploiement s'effectue automatiquement sur heroku par *CircleCI* lors de la modification de la branche`master`.
+
+Pour configurer correctement le déploiement :
+  * Sur la plateforme `Heroku`:
+    * Récupérez la clé API `<heroku-api-key>`
+    * Créez une nouvelle application `<heroku-app-name>`
+    * Dans l'application précédemment créée : dans 'Settings > Config Vars', 
+ajoutez les variables d'environnement suivantes :
+      * `ALLOWED_HOSTS` = *
+      * `SECRET_KEY` = votre clé secrète Django
+      * `SENTRY_DSN` = votre DNS pour la surveillance d' l'application par sentry
+  * Sur la plateforme `CircleCI`: créez les variables d'environnement suivantes :
+    * `ALLOWED_HOSTS` = *
+    * `DOCKER_USER` = Votre nom d'utilisateur Docker
+    * `DOCKER_PASSWORD` = Votre mot de passe Docker
+    * `HEROKU_APP_NAME` = Le nom de votre application heroku `<heroku-app-name>`
+    * `HEROKU_API_KEY` = Votre clé d' API heroku `<heroku-api-key>`
+    * `SENTRY_DSN` = votre DNS pour la surveillance d' l'application par sentry
+    * `SECRET_KEY` = votre clé secrète Django
+
+Une fois la configuration du déploiement effectuée:
+  * Déclenchez le cycle CI/CD de `Circle CI` en effectuant l'une des opérations suivantes :
+    * un push sur la branche `master
+    * un déclenchement manuel a partir de l'interface web de CircleCI
+  * Une fois le cycle CI/CD terminé, 
+vous pouvez accéder au site sur votre navigateur à l'adresse `https://<heroku-app-name>.herokuapp.com`
