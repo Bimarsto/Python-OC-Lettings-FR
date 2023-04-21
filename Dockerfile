@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV PORT=8000
 ENV ALLOWED_HOSTS=127.0.0.1,[::1],0.0.0.0,.herokuapp.com
-ENV SENTRY_DSN='https://4e55b1907f2748a48e32f3cb8d924370@o4504798040621056.ingest.sentry.io/4504950299230208'
+ENV SECRET_KEY='fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s'
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
